@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class='col-sm-6 col-sm-offset-3'>
+  <h1 style="color:grey;"><b>List</b></h1>
+    <h1>{{ list.title }}</h1>
+    <form method='GET' action=''>
+      <input type='text' name='q'placeholder='Search posts' value ='{{ request.GET.q }}'/>
+      <input type='submit' value='Submit'/>
+
+    </form>
+
+{% for obj in list %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="thumbnail">
+        {% if obj.image %}
+        <img src='{{obj.image.url}}' class='img-responsive' />
+        {% endif %}
+      <div class="caption">
+        <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title | title}}</a> <small>{{ obj.timestamp|timesince }} ago</small></h3>
+        <p>User:{{ obj.user | title }}</p>
+        <p>{{ obj.content|linebreaks|truncatechars:120 }}</p>
+        <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
+      </div>
+    </div>
+  </div>
+<hr/>
+</div>
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if list.has_previous %}
+            <!-- <a href="?page=1">&laquo; first</a> -->
+            <a href="?page={{ list.previous_page_number }} & q={{ request.GET.q }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ list.number }} of {{ list.paginator.num_pages }}.
+        </span>
+
+        {% if list.has_next %}
+            <a href="?page={{ list.next_page_number }} & q={{ request.GET.q }}">Next</a>
+            <!-- <a href="?page={{ list.paginator.num_pages }}">last &raquo;</a> -->
+        {% endif %}
+    </span>
+</div>
+
+</div>
+
+{% endblock content %}

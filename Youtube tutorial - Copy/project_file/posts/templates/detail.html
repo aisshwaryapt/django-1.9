@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load urlify %}
+
+{% block head_title %}
+{{ instance.title }} | {{ block.super }}
+{% endblock head_title %}
+
+
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-3'>
+    {% if instance.image %}
+    <img src='{{ instance.image.url }}' class='img-responsive' />
+    {% endif %}
+<h1>{{ instance.title }} <small>{{ instance.timestamp}}</small></h1>
+<p>User: {{ instance.user }}</p>
+
+<div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-width="" data-layout="button" 
+data-action="like" data-size="small" data-share="true"></div>
+{{ instance.content|linebreaks }}<br/>
+
+<div class='col-sm-12'>
+<div class="fb-comments" data-href={{ request.build_absolute_uri }}
+ data-numposts="5" data-width="500"></div>
+</div>
+
+</div>
+
+
+{% endblock content %}
